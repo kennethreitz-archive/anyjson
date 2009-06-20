@@ -40,8 +40,12 @@ except ImportError:
             serialize = json.dumps
             deserialize = json.loads
         except ImportError:
-            # If all of the above fails, try to fallback to the simplejson
-            # embedded in Django.
-            from django.utils import simplejson
-            serialize = simplejson.dumps
-            deserialize = simplejson.loads
+            try:
+                # If all of the above fails, try to fallback to the simplejson
+                # embedded in Django.
+                from django.utils import simplejson
+                serialize = simplejson.dumps
+                deserialize = simplejson.loads
+            except:
+                raise ImportError("No json module found")
+
