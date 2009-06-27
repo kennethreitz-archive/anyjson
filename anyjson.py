@@ -36,6 +36,13 @@ _deserialize = None
 _ser_error = None
 _des_error = None
 
+"""
+.. data:: _modules
+
+    List of known json modules, and the names of their serialize/unserialize
+    methods, as well as the exception they throw. Exception can be either
+    an exception class or a string.
+"""
 _modules = [("cjson", "encode", "EncodeError", "decode", "DecodeError"),
             ("jsonlib2", "write", "WriteError", "read", "ReadError"),
             ("jsonlib", "write", "WriteError", "read", "ReadError"),
@@ -46,6 +53,7 @@ _modules = [("cjson", "encode", "EncodeError", "decode", "DecodeError"),
 
 
 def _attempt_load(modname, encname, encerror, decname, decerror):
+    """Tries to load a module and assign the enc/dec stuff to globals"""
     try:
         global _serialize, _deserialize, _ser_error, _des_error
         global implementation
@@ -71,6 +79,7 @@ def _attempt_load(modname, encname, encerror, decname, decerror):
 
 
 def force_implementation(modname):
+    """Forces anyjson to use a specific json module if it's available"""
     for name, spec in [(e[0], e) for e in _modules]:
         print "spce:", spec
         if name == modname and _attempt_load(*spec):
@@ -79,26 +88,20 @@ def force_implementation(modname):
     raise ImportError(modname)
 
 
-class JsonValueError(ValueError):
-    pass
-
-
-class JsonTypeError(TypeError):
-    pass
-
-
-def serialize(s):
+def serialize(data):
+    """Serialise the object data into a json string"""
     try:
-        return _serialize(s)
+        return _serialize(data)
     except _ser_error:
-        raise JsonTypeError()
+        raise TypeError()
 
 
-def deserialize(s):
+def deserialize(string):
+    """Deserialize a string of json into python data types"""
     try:
-        return _deserialize(s)
+        return _deserialize(string)
     except _des_error:
-        raise JsonValueError()
+        raise ValueError()
 
 for modspec in _modules:
     if _attempt_load(*modspec):
