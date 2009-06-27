@@ -15,7 +15,14 @@ Ask Solem <askh@opera.com>
 Changelog
 ---------
 
-0.1: Initial release
+0.1:
+
+ * Initial release
+
+0.1.1
+
+ * Added benchmarking script
+ * Added support for more serializer modules
 
 License
 -------
