@@ -81,7 +81,6 @@ def _attempt_load(modname, encname, encerror, decname, decerror):
 def force_implementation(modname):
     """Forces anyjson to use a specific json module if it's available"""
     for name, spec in [(e[0], e) for e in _modules]:
-        print "spce:", spec
         if name == modname and _attempt_load(*spec):
             return
 
