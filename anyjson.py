@@ -41,8 +41,8 @@ _modules = [("cjson", "encode", "EncodeError", "decode", "DecodeError"),
             ("jsonlib", "write", "WriteError", "read", "ReadError"),
             ("simplejson", "dumps", TypeError, "loads", ValueError),
             ("json", "dumps", TypeError, "loads", ValueError),
-            ("django.utils.simplejson", "dumps", TypeError, "loads", ValueError)
-            ]
+            ("django.utils.simplejson", "dumps", TypeError, "loads",
+             ValueError)]
 
 
 def _attempt_load(modname, encname, encerror, decname, decerror):
@@ -54,7 +54,7 @@ def _attempt_load(modname, encname, encerror, decname, decerror):
         _serialize = getattr(mod, encname)
         _deserialize = getattr(mod, decname)
 
-        if  isclass(encerror) and issubclass(encerror, Exception):
+        if isclass(encerror) and issubclass(encerror, Exception):
             _ser_error = encerror
         else:
             _ser_error = getattr(mod, encerror)
@@ -69,6 +69,7 @@ def _attempt_load(modname, encname, encerror, decname, decerror):
     except ImportError:
         return False
 
+
 def force_implementation(modname):
     for name, spec in [(e[0], e) for e in _modules]:
         print "spce:", spec
@@ -81,14 +82,17 @@ def force_implementation(modname):
 class JsonValueError(ValueError):
     pass
 
+
 class JsonTypeError(TypeError):
     pass
+
 
 def serialize(s):
     try:
         return _serialize(s)
     except _ser_error:
         raise JsonTypeError()
+
 
 def deserialize(s):
     try:
@@ -101,5 +105,3 @@ for modspec in _modules:
         break
 else:
     raise ImportError("No json module found")
-
-
