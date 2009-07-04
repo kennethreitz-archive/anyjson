@@ -1,5 +1,5 @@
 """
-Get the best JSON encoder/decoder available on this system.
+Wraps the best available JSON implementation available in a common interface
 """
 
 __version__ = "0.2.0"
@@ -13,28 +13,24 @@ __docformat__ = "restructuredtext"
 
     Serialize the object to JSON.
 
-.. function:: deserialize(obj)
+.. function:: deserialize(str)
 
     Deserialize JSON-encoded object to a Python object.
 
-.. function:: force_implementation(obj)
+.. function:: force_implementation(name)
 
     Load a specific json module. This is useful for testing and not much else
 
 .. attribute:: implementation
 
-    Name of the json implementation that is being used
+    The json implementation object. This is probably not useful to you,
+    except to get the name of the implementation in use. The name is
+    available through `implementation.name`.
 """
 
 import sys
-from inspect import isclass
 
 implementation = None
-
-_serialize = None
-_deserialize = None
-_ser_error = None
-_des_error = None
 
 """
 .. data:: _modules
@@ -50,60 +46,75 @@ _modules = [("cjson", "encode", "EncodeError", "decode", "DecodeError"),
             ("json", "dumps", TypeError, "loads", ValueError),
             ("django.utils.simplejson", "dumps", TypeError, "loads",
              ValueError)]
+_fields = ("modname", "encoder", "encerror", "decoder", "decerror")
 
 
-def _attempt_load(modname, encname, encerror, decname, decerror):
-    """Tries to load a module and assign the enc/dec stuff to globals"""
-    try:
-        global _serialize, _deserialize, _ser_error, _des_error
-        global implementation
-        __import__(modname)
-        mod = sys.modules[modname]
-        _serialize = getattr(mod, encname)
-        _deserialize = getattr(mod, decname)
+class _JsonImplementation(object):
+    """Incapsulates a JSON implementation"""
 
-        if isclass(encerror) and issubclass(encerror, Exception):
-            _ser_error = encerror
+    def __init__(self, modspec):
+        modinfo = dict(zip(_fields, modspec))
+
+        # No try block. We want importerror to end up at caller
+        module = self._attempt_load(modinfo["modname"])
+
+        self.implementation = modinfo["modname"]
+        self._encode = getattr(module, modinfo["encoder"])
+        self._decode = getattr(module, modinfo["decoder"])
+        self._encode_error = modinfo["encerror"]
+        self._decode_error = modinfo["decerror"]
+
+        if isinstance(modinfo["encerror"], basestring):
+            self._encode_error = getattr(module, modinfo["encerror"])
+        if isinstance(modinfo["decerror"], basestring):
+            self._decode_error = getattr(module, modinfo["decerror"])
+
+        self.name = modinfo["modname"]
+
+    def _attempt_load(self, modname):
+        """Attempt to load module name modname, returning it on success,
+        throwing ImportError if module couldn't be imported"""
+        try:
+            __import__(modname)
+        except ImportError:
+            return
         else:
-            _ser_error = getattr(mod, encerror)
+            return sys.modules[modname]
 
-        if isclass(decerror) and issubclass(decerror, Exception):
-            _des_error = decerror
-        else:
-            _des_error = getattr(mod, decerror)
+    def serialize(self, data):
+        """Serialize the datastructure to json. Returns a string. Raises
+        TypeError if the object could not be serialized."""
+        try:
+            return self._encode(data)
+        except self._encode_error, exc:
+            raise TypeError(*exc.args)
 
-        implementation = modname
-        return True
-    except ImportError:
-        return False
+    def deserialize(self, s):
+        """deserialize the string to python data types. Raises
+        ValueError if the string vould not be parsed."""
+        try:
+            return self._decode(s)
+        except self._decode_error, exc:
+            raise ValueError(*exc.args)
 
 
 def force_implementation(modname):
     """Forces anyjson to use a specific json module if it's available"""
+    global implementation
     for name, spec in [(e[0], e) for e in _modules]:
-        if name == modname and _attempt_load(*spec):
+        if name == modname:
+            implementation = _JsonImplementation(spec)
             return
+    raise ImportError("No module named: %s" % modname)
 
-    raise ImportError(modname)
-
-
-def serialize(data):
-    """Serialise the object data into a json string"""
-    try:
-        return _serialize(data)
-    except _ser_error:
-        raise TypeError()
-
-
-def deserialize(string):
-    """Deserialize a string of json into python data types"""
-    try:
-        return _deserialize(string)
-    except _des_error:
-        raise ValueError()
 
 for modspec in _modules:
-    if _attempt_load(*modspec):
-        break
+    try:
+        implementation = _JsonImplementation(modspec)
+    except ImportError:
+        pass
 else:
-    raise ImportError("No json module found")
+    raise ImportError("No supported JSON module found")
+
+serialize = lambda value: implementation.serialize(value)
+deserialize = lambda value: implementation.deserialize(value)
