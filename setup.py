@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup
 
 import anyjson
 author, email = anyjson.__author__[:-1].split(' <')
@@ -6,6 +6,7 @@ author, email = anyjson.__author__[:-1].split(' <')
 setup(name='anyjson',
       version=anyjson.__version__,
       description=anyjson.__doc__,
+      long_description=open("README").read(),
       classifiers=[
             'License :: OSI Approved :: BSD License',
             'Intended Audience :: Developers',
