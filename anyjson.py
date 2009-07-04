@@ -74,12 +74,8 @@ class _JsonImplementation(object):
     def _attempt_load(self, modname):
         """Attempt to load module name modname, returning it on success,
         throwing ImportError if module couldn't be imported"""
-        try:
-            __import__(modname)
-        except ImportError:
-            return
-        else:
-            return sys.modules[modname]
+        __import__(modname)
+        return sys.modules[modname]
 
     def serialize(self, data):
         """Serialize the datastructure to json. Returns a string. Raises
@@ -111,6 +107,7 @@ def force_implementation(modname):
 for modspec in _modules:
     try:
         implementation = _JsonImplementation(modspec)
+        break
     except ImportError:
         pass
 else:
