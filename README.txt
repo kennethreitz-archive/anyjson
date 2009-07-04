@@ -1,7 +1,7 @@
 Overview
 --------
 
-Imports the best available json encoder and decoder from any installed json
+Imports the best available JSON encoder and decoder from any installed json
 module.
 
 Originally part of carrot (http://github.com/ask/carrot/)
@@ -23,6 +23,17 @@ Changelog
 
  * Added benchmarking script
  * Added support for more serializer modules
+
+0.2
+
+ * Added exception handling so that all supported modules will result in the
+   same exceptions being thrown. The exceptions are the same that are used
+   by the JSON module from python 2.7, TypeError for serialize and
+   ValueError for deserialize.
+ * '''NOTE''' API changed. the implementation property is now an object, not
+   a string
+ * Rewrote module loading code, so it's now easier to add and rearrange
+   JSON modules
 
 License
 -------
