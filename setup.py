@@ -18,4 +18,6 @@ setup(name='anyjson',
       url='http://bitbucket.org/runeh/anyjson',
       license='BSD',
       py_modules=['anyjson'],
+      zip_safe=False,
+      platforms=["any"],
 )
