@@ -104,14 +104,38 @@ def force_implementation(modname):
     raise ImportError("No module named: %s" % modname)
 
 
-for modspec in _modules:
-    try:
-        implementation = _JsonImplementation(modspec)
-        break
-    except ImportError:
-        pass
-else:
-    raise ImportError("No supported JSON module found")
 
-serialize = lambda value: implementation.serialize(value)
-deserialize = lambda value: implementation.deserialize(value)
+def main():
+    installed = []
+    for modspec in _modules:
+        try:
+            __import__(modspec[0])
+            installed.append(modspec[0])
+        except ImportError:
+            pass
+
+    if installed:
+        print "Supported JSON modules found:", ", ".join(installed)
+        return 0
+    else:
+        print "No supported JSON modules found"
+        return 1
+
+if __name__ == "__main__":
+    # If run as a script, we simply print what is installed that we support.
+    # We do NOT try to load a compatible module because that may throw an
+    # exception, which renders the package uninstallable with easy_install
+    # (It trys to execfile the script when installing, to make sure it works)
+    sys.exit(main())
+else:
+    for modspec in _modules:
+        try:
+            implementation = _JsonImplementation(modspec)
+            break
+        except ImportError:
+            pass
+        else:
+            raise ImportError("No supported JSON module found")
+
+        serialize = lambda value: implementation.serialize(value)
+        deserialize = lambda value: implementation.deserialize(value)
