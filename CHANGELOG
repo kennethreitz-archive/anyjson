@@ -17,3 +17,8 @@
    a string
  * Rewrote module loading code, so it's now easier to add and rearrange
    JSON modules
+
+0.2.1
+
+ * Fixed bug that rendered the lib uninstalleable with easy_install if there
+   was no supported json module allready installed

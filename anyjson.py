@@ -2,7 +2,7 @@
 Wraps the best available JSON implementation available in a common interface
 """
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 __author__ = "Rune Halvorsen <runefh@gmail.com>"
 __homepage__ = "http://bitbucket.org/runeh/anyjson/"
 __docformat__ = "restructuredtext"
