@@ -22,5 +22,3 @@
 
  * Fixed bug that rendered the lib uninstalleable with easy_install if there
    was no supported json module allready installed
- * Running the module (with python -m anyjson) will now show a list of
-   supported modules that are installed
