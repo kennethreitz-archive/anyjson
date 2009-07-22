@@ -44,6 +44,9 @@ class _JsonImplementation(object):
 
         self.name = modinfo["modname"]
 
+    def __str__(self):
+        return "<_JsonImplementation instance using %s>" % self.name
+
     def _attempt_load(self, modname):
         """Attempt to load module name modname, returning it on success,
         throwing ImportError if module couldn't be imported"""
