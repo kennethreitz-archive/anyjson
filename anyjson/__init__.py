@@ -1,35 +1,8 @@
-"""
-Wraps the best available JSON implementation available in a common interface
-"""
-
-__version__ = "0.2.1"
-__author__ = "Rune Halvorsen <runefh@gmail.com>"
-__homepage__ = "http://bitbucket.org/runeh/anyjson/"
-__docformat__ = "restructuredtext"
-
-"""
-
-.. function:: serialize(obj)
-
-    Serialize the object to JSON.
-
-.. function:: deserialize(str)
-
-    Deserialize JSON-encoded object to a Python object.
-
-.. function:: force_implementation(name)
-
-    Load a specific json module. This is useful for testing and not much else
-
-.. attribute:: implementation
-
-    The json implementation object. This is probably not useful to you,
-    except to get the name of the implementation in use. The name is
-    available through `implementation.name`.
-"""
-
+from metadata import *
 import sys
 
+# explicitly pull in docstring from metadata. see comments there for why.
+__doc__ = metadata.__doc__
 implementation = None
 
 """
@@ -137,5 +110,5 @@ else:
         else:
             raise ImportError("No supported JSON module found")
 
-        serialize = lambda value: implementation.serialize(value)
-        deserialize = lambda value: implementation.deserialize(value)
+    serialize = lambda value: implementation.serialize(value)
+    deserialize = lambda value: implementation.deserialize(value)

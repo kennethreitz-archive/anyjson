@@ -1,11 +1,11 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
-import anyjson
-author, email = anyjson.__author__[:-1].split(' <')
+import anyjson.metadata as meta
+author, email = meta.__author__[:-1].split(' <')
 
 setup(name='anyjson',
-      version=anyjson.__version__,
-      description=anyjson.__doc__,
+      version=meta.__version__,
+      description=meta.__doc__,
       long_description=open("README").read(),
       classifiers=[
             'License :: OSI Approved :: BSD License',
@@ -17,7 +17,8 @@ setup(name='anyjson',
       author_email=email,
       url='http://bitbucket.org/runeh/anyjson',
       license='BSD',
-      py_modules=['anyjson'],
+      packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
       zip_safe=False,
       platforms=["any"],
+      test_suite = 'nose.collector',
 )
