@@ -6,6 +6,24 @@ __doc__ = metadata.__doc__
 implementation = None
 
 """
+.. function:: serialize(obj)
+
+    Serialize the object to JSON.
+
+.. function:: deserialize(str)
+
+    Deserialize JSON-encoded object to a Python object.
+
+.. function:: force_implementation(name)
+
+    Load a specific json module. This is useful for testing and not much else
+
+.. attribute:: implementation
+
+    The json implementation object. This is probably not useful to you,
+    except to get the name of the implementation in use. The name is
+    available through `implementation.name`.
+
 .. data:: _modules
 
     List of known json modules, and the names of their serialize/unserialize
@@ -80,29 +98,13 @@ def force_implementation(modname):
     raise ImportError("No module named: %s" % modname)
 
 
-
-def main():
-    installed = []
-    for modspec in _modules:
-        try:
-            __import__(modspec[0])
-            installed.append(modspec[0])
-        except ImportError:
-            pass
-
-    if installed:
-        print "Supported JSON modules found:", ", ".join(installed)
-        return 0
-    else:
-        print "No supported JSON modules found"
-        return 1
-
 if __name__ == "__main__":
-    # If run as a script, we simply print what is installed that we support.
+    # If run as a script, we do nothing but print an error message.
     # We do NOT try to load a compatible module because that may throw an
     # exception, which renders the package uninstallable with easy_install
     # (It trys to execfile the script when installing, to make sure it works)
-    sys.exit(main())
+    print "Running anyjson as a stand alone script is not supported"
+    sys.exit(1)
 else:
     for modspec in _modules:
         try:
