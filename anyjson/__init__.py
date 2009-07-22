@@ -112,8 +112,8 @@ else:
             break
         except ImportError:
             pass
-        else:
-            raise ImportError("No supported JSON module found")
+    else:
+        raise ImportError("No supported JSON module found")
 
     serialize = lambda value: implementation.serialize(value)
     deserialize = lambda value: implementation.deserialize(value)
