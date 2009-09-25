@@ -1,11 +1,14 @@
 from setuptools import setup, find_packages
 
-import anyjson.metadata as meta
-author, email = meta.__author__[:-1].split(' <')
+author = "Rune Halvorsen"
+email = "runefh@gmail.com"
+version = "0.2.2"
+desc = """Wraps the best available JSON implementation available in a common
+interface"""
 
 setup(name='anyjson',
-      version=meta.__version__,
-      description=meta.__doc__,
+      version=version,
+      description=desc,
       long_description=open("README").read(),
       classifiers=[
             'License :: OSI Approved :: BSD License',

@@ -22,3 +22,9 @@
 
  * Fixed bug that rendered the lib uninstalleable with easy_install if there
    was no supported json module allready installed
+
+0.2.2
+
+ * Fixed bug #2. Installation failed if there were noe compatible json 
+   implementations installed, because the module was loaeded, and threw import
+   exception during the install process.

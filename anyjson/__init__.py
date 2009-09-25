@@ -1,8 +1,13 @@
-from metadata import *
+"""Wraps the best available JSON implementation available in a common
+interface"""
+
 import sys
 
-# explicitly pull in docstring from metadata. see comments there for why.
-__doc__ = metadata.__doc__
+__version__ = "0.2.2"
+__author__ = "Rune Halvorsen <runefh@gmail.com>"
+__homepage__ = "http://bitbucket.org/runeh/anyjson/"
+__docformat__ = "restructuredtext"
+
 implementation = None
 
 """
