@@ -28,3 +28,8 @@
  * Fixed bug #2. Installation failed if there were noe compatible json 
    implementations installed, because the module was loaeded, and threw import
    exception during the install process.
+
+0.2.3
+
+ * Fixed bug #3
+ * Fixed bug in benchmarking script
