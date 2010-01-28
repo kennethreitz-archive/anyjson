@@ -106,8 +106,11 @@ for e in modules:
                       do_benchmark(e, _deep , runs),
                       do_benchmark(e, _big, runs)))
 
-
+no_res = set([e for e in res if e[1] is None])
+res = list(set(res) - no_res)
 res.sort(lambda a,b: cmp(sum(a[1:4]), sum(b[1:4])))
 
 for e in res:
     print "%.3f %s" % (sum(e[1:4]), e[0])
+for e in no_res:
+    print "Not installed:", e[0]
