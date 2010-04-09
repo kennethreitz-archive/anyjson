@@ -35,7 +35,8 @@ implementation = None
     methods, as well as the exception they throw. Exception can be either
     an exception class or a string.
 """
-_modules = [("cjson", "encode", "EncodeError", "decode", "DecodeError"),
+_modules = [("yajl", "dumps", TypeError, "loads", ValueError),
+            ("cjson", "encode", "EncodeError", "decode", "DecodeError"),
             ("jsonlib2", "write", "WriteError", "read", "ReadError"),
             ("jsonlib", "write", "WriteError", "read", "ReadError"),
             ("simplejson", "dumps", TypeError, "loads", ValueError),

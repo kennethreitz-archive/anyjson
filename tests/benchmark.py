@@ -91,6 +91,7 @@ def do_benchmark(impspec, json, runs=10):
 
 modules = [("json", "loads"),
            ("simplejson", "loads"),
+           ("yajl", "loads"),
            ("cjson", "decode"),
            ("django.utils.simplejson", "loads"),
            ("jsonpickle", "decode"),
