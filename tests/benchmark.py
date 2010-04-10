@@ -100,7 +100,7 @@ def do_benchmark(impspec, json, runs=10):
 
     start = time.time()
     for n in xrange(runs):
-        data = dumps(data)
+        devnull = dumps(data)
 
     return readtime, time.time() - start # tuple (readtime, writetime)
 
@@ -111,9 +111,9 @@ modules = [("json", "loads", "dumps"),
            ("cjson", "decode", "encode"),
            ("django.utils.simplejson", "loads", "dumps"),
            ("jsonpickle", "decode", "encode"),
-           #("jsonlib", "read", "write"),
+           ("jsonlib", "read", "write"),
            ("jsonlib2", "read", "write"),
-       #    ("demjson", "decode"), terribly slow. wont include it
+           #("demjson", "decode"), terribly slow. wont include it
            ]
 
 if len(sys.argv) > 1 and sys.argv[1] == "--download":
