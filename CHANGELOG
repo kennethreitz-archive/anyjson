@@ -25,7 +25,7 @@
 
 0.2.2
 
- * Fixed bug #2. Installation failed if there were noe compatible json 
+ * Fixed bug #2. Installation failed if there were noe compatible json
    implementations installed, because the module was loaeded, and threw import
    exception during the install process.
 
@@ -33,3 +33,9 @@
 
  * Fixed bug #3
  * Fixed bug in benchmarking script
+
+0.2.4
+
+ * Added support for py-yajl (Thanks Benjamin Anderson)
+ * Improved benchmark script to test serialization performance and
+   to use real life data for tests.

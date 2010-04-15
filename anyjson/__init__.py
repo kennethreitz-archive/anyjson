@@ -3,7 +3,7 @@ interface"""
 
 import sys
 
-__version__ = "0.2.3"
+__version__ = "0.2.4"
 __author__ = "Rune Halvorsen <runefh@gmail.com>"
 __homepage__ = "http://bitbucket.org/runeh/anyjson/"
 __docformat__ = "restructuredtext"
