@@ -123,3 +123,5 @@ else:
 
     serialize = lambda value: implementation.serialize(value)
     deserialize = lambda value: implementation.deserialize(value)
+    dumps = serialize
+    loads = deserialize
