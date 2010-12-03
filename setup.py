@@ -1,4 +1,13 @@
-from setuptools import setup, find_packages
+import sys
+
+extra = {}
+if sys.version_info >= (3, 0):
+    extra.update(use_2to3=True)
+
+try:
+    from setuptools import setup, find_packages
+except ImportError:
+    from distutils.core import setup, find_packages
 
 author = "Rune Halvorsen"
 email = "runefh@gmail.com"
@@ -12,8 +21,15 @@ setup(name='anyjson',
       classifiers=[
             'License :: OSI Approved :: BSD License',
             'Intended Audience :: Developers',
-            'Programming Language :: Python'
-            ],
+            'Programming Language :: Python',
+            'Programming Language :: Python :: 2',
+            'Programming Language :: Python :: 2.4',
+            'Programming Language :: Python :: 2.5',
+            'Programming Language :: Python :: 2.6',
+            'Programming Language :: Python :: 2.7',
+            'Programming Language :: Python :: 3',
+            'Programming Language :: Python :: 3.1',
+          ],
       keywords='json',
       author=author,
       author_email=email,
@@ -23,4 +39,5 @@ setup(name='anyjson',
       zip_safe=False,
       platforms=["any"],
       test_suite = 'nose.collector',
+      **extra
 )
