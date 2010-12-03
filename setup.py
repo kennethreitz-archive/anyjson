@@ -11,7 +11,7 @@ except ImportError:
 
 author = "Rune Halvorsen"
 email = "runefh@gmail.com"
-version = "0.2.5"
+version = "0.3"
 desc = """Wraps the best available JSON implementation available in a common interface"""
 
 setup(name='anyjson',
