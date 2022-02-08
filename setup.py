@@ -1,8 +1,4 @@
-import sys
-
 extra = {}
-if sys.version_info >= (3, 0):
-    extra.update(use_2to3=True)
 
 try:
     from setuptools import setup, find_packages
@@ -12,7 +8,7 @@ except ImportError:
 author = "Rune Halvorsen"
 email = "runefh@gmail.com"
 version = "0.3"
-desc = """Wraps the best available JSON implementation available in a common interface"""
+desc = """Wraps the best JSON implementation available in a common interface"""
 
 setup(name='anyjson',
       version=version,
@@ -38,6 +34,5 @@ setup(name='anyjson',
       packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
       zip_safe=False,
       platforms=["any"],
-      test_suite = 'nose.collector',
       **extra
 )
