@@ -4,7 +4,7 @@ Simple benchmark script to do some basic speed tests of json libs
 
 import sys
 import time
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 _small = """
 {
@@ -77,8 +77,8 @@ _twitter = "[]"
 
 def load_external_json():
     global _reddit, _twitter
-    _reddit = urllib.urlopen("http://reddit.com/.json").read()
-    _twitter = urllib.urlopen("http://api.twitter.com/1/statuses/user_timeline.json?screen_name=twitterapi&count=200").read()
+    _reddit = urllib.request.urlopen("http://reddit.com/.json").read()
+    _twitter = urllib.request.urlopen("http://api.twitter.com/1/statuses/user_timeline.json?screen_name=twitterapi&count=200").read()
 
 
 def do_benchmark(impspec, json, runs=10):
@@ -93,13 +93,13 @@ def do_benchmark(impspec, json, runs=10):
         return None
 
     start = time.time()
-    for n in xrange(runs):
+    for n in range(runs):
         data = reads(json)
 
     readtime = time.time() - start
 
     start = time.time()
-    for n in xrange(runs):
+    for n in range(runs):
         devnull = dumps(data)
 
     return readtime, time.time() - start # tuple (readtime, writetime)
@@ -131,13 +131,13 @@ for e in modules:
 
 no_res = set([e for e in res if e[1] is None])
 res = list(set(res) - no_res)
-res = [(e[0], sum(map(lambda x:x[0], e[1:])), sum(map(lambda x:x[1], e[1:]))) for e in res]
+res = [(e[0], sum([x[0] for x in e[1:]]), sum([x[1] for x in e[1:]])) for e in res]
 
 res.sort(lambda a,b: cmp((a[1]+a[2]), b[1]+b[2]))
 
-print "Total  Read   Write  Implementation"
-print "-----------------------------------"
+print("Total  Read   Write  Implementation")
+print("-----------------------------------")
 for e in res:
-    print "%.3f  %.3f  %.3f  %s" % (e[1]+e[2], e[1], e[2], e[0])
+    print("%.3f  %.3f  %.3f  %s" % (e[1]+e[2], e[1], e[2], e[0]))
 for e in no_res:
-    print "Not installed:", e[0]
+    print("Not installed:", e[0])

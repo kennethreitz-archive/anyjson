@@ -1,4 +1,4 @@
-from nose.tools import assert_raises
+import pytest
 import anyjson
 
 modnames = [e[0] for e in anyjson._modules]
@@ -42,8 +42,11 @@ def test_exceptions():
         except ImportError:
             continue # module can't be tested, try next
 
-        assert_raises(TypeError, anyjson.serialize, [object()])
-        assert_raises(TypeError, anyjson.dumps, [object()])
-        assert_raises(ValueError, anyjson.deserialize, "[")
-        assert_raises(ValueError, anyjson.loads, "[")
-
+        with pytest.raises(TypeError):
+            anyjson.serialize([object()])
+        with pytest.raises(TypeError):
+            anyjson.dumps([object()])
+        with pytest.raises(ValueError):
+            anyjson.deserialize("[")
+        with pytest.raises(ValueError):
+            anyjson.loads("[")

@@ -50,7 +50,7 @@ class _JsonImplementation(object):
     """Incapsulates a JSON implementation"""
 
     def __init__(self, modspec):
-        modinfo = dict(zip(_fields, modspec))
+        modinfo = dict(list(zip(_fields, modspec)))
 
         # No try block. We want importerror to end up at caller
         module = self._attempt_load(modinfo["modname"])
@@ -61,9 +61,9 @@ class _JsonImplementation(object):
         self._encode_error = modinfo["encerror"]
         self._decode_error = modinfo["decerror"]
 
-        if isinstance(modinfo["encerror"], basestring):
+        if isinstance(modinfo["encerror"], str):
             self._encode_error = getattr(module, modinfo["encerror"])
-        if isinstance(modinfo["decerror"], basestring):
+        if isinstance(modinfo["decerror"], str):
             self._decode_error = getattr(module, modinfo["decerror"])
 
         self.name = modinfo["modname"]
@@ -82,7 +82,7 @@ class _JsonImplementation(object):
         TypeError if the object could not be serialized."""
         try:
             return self._encode(data)
-        except self._encode_error, exc:
+        except self._encode_error as exc:
             raise TypeError(*exc.args)
 
     def deserialize(self, s):
@@ -90,7 +90,7 @@ class _JsonImplementation(object):
         ValueError if the string vould not be parsed."""
         try:
             return self._decode(s)
-        except self._decode_error, exc:
+        except self._decode_error as exc:
             raise ValueError(*exc.args)
 
 
@@ -109,7 +109,7 @@ if __name__ == "__main__":
     # We do NOT try to load a compatible module because that may throw an
     # exception, which renders the package uninstallable with easy_install
     # (It trys to execfile the script when installing, to make sure it works)
-    print "Running anyjson as a stand alone script is not supported"
+    print("Running anyjson as a stand alone script is not supported")
     sys.exit(1)
 else:
     for modspec in _modules:
